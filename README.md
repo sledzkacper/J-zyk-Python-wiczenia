@@ -1,3 +1,3 @@
 # Jezyk-Python-cwiczenia
 
-Repozytorium poświęcone skłądowaniu zadań z przedmiotu "Język Python"
+Repozytorium poświęcone składowaniu zadań z przedmiotu "Język Python"
