@@ -1,0 +1,7 @@
+word = "word"
+print("_".join(word))
+
+#Terminal:
+PS C:\Users\User> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Zadanie_2.5/2.11.py"
+w_o_r_d
+PS C:\Users\User> 
