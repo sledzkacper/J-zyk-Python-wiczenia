@@ -1,1 +1,35 @@
+print(dir(dict))  # Wyświetla wszystkie atrybuty i metody dostępne dla obiektów typu dict, czyli słownik. Słowniki działają jak funkcje - przypisują wartościom konkretne klucze.
 
+D = {1 : 'a', 2 : 'b', 3 : 'c'} 
+
+# Przykłady użycia niektórych metod słownika:
+
+print (D[1])        # Dostęp do wartości pod kluczem 1
+
+D[4] = 'd'          # Dodanie nowej pary
+print (D)
+
+print (len(D))      # Liczba par w słowniku
+print (D.keys())    # Wyświetlenie wszystkich kluczy słownika
+print (D.values())  # Wyświetlenie wszystkich wartości słownika
+
+
+# print (d[5])  # Próba dostępu do nieistniejącego klucza (spowoduje błąd KeyError)
+#Teminal:
+Traceback (most recent call last):
+  File "c:\Users\User\Desktop\uj\sem I\Python\main.py\Zadanie_2.5\2.7.py", line 17, in <module>
+    print (d[5])  # Próba dostępu do nieistniejącego klucza (spowoduje błąd KeyError)
+           ^
+NameError: name 'd' is not defined. Did you mean: 'D'?
+PS C:\Users\User> 
+
+
+#Terminal bez KeyError:
+PS C:\Users\User> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Zadanie_2.5/2.7.py"
+['__class__', '__class_getitem__', '__contains__', '__delattr__', '__delitem__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__ior__', '__iter__', '__le__', '__len__', '__lt__', '__ne__', '__new__', '__or__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__ror__', '__setattr__', '__setitem__', '__sizeof__', '__str__', '__subclasshook__', 'clear', 'copy', 'fromkeys', 'get', 'items', 'keys', 'pop', 'popitem', 'setdefault', 'update', 'values']
+a
+{1: 'a', 2: 'b', 3: 'c', 4: 'd'}
+4
+dict_keys([1, 2, 3, 4])
+dict_values(['a', 'b', 'c', 'd'])
+PS C:\Users\User>
