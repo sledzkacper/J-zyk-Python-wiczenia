@@ -1,0 +1,61 @@
+L = [3, "xyz", [10, 20]]
+len(L) # zwraca 3 - czyli liczba elementów w liście L
+L[1], L[1][0], L[2], L[2][1]
+M = L # referencja, wszystko co zmieni się w M, zmieni się też w L
+# Indeksowanie:
+print (L[1])    # zwraca "xyz"
+print (L[1][0])  # zwraca "x"
+print (L[2])    # zwraca [10, 20]
+print (L[2][1])  # zwraca 20
+
+# Wycinki:
+L [0:2]
+print (L[0:2])  # zwraca [3, "xyz"], zatem wycinek jest pół otwarty, (z lewej strony przedział jest domknięty, z prawej otwarty)
+
+#Konkatenacja i powtórzernie:
+print (L * 2)  # zwraca [3, "xyz", [10, 20], 3, "xyz", [10, 20]] - czyli powtarza listę dwa razy
+
+print (str(L[0]) + L[1][0]) # zwraca "3x" - czyli konkatenacja liczby 3 i pierwszego znaku drugiego elementu z listy L
+
+# Podstawianie pod element lub wycinek:
+L[2] = "podstawiony element"
+print (L) # zwraca [3, "xyz", "podstawiony element"]
+
+# Generowanie list funkcją range():
+alist = list(range(4))
+print(alist)  # zwraca [0, 1, 2, 3] - liczy od 0 i kończy na 4-tym wyrazu ciągu, czyli na 3
+
+# Kopiowanie list:
+Kopia = L[:]
+print(Kopia)  # zwraca [3, "xyz", "podstawiony element"] - stworzyło kopię L, jednak jest to inny obiekt w pamięci
+
+# Sortowanie list:
+K = [1, 6, 4322, 0.1]
+K.sort()
+print(K)  # zwraca [0.1, 1, 6, 4322] - lista została posortowana rosnąco
+
+# Listy składane:
+J = [x*2 for x in range(7)]
+print(J)  # zwraca [0, 2, 4, 6, 8, 10, 12]
+
+
+
+
+
+
+
+# Terminal:
+PS C:\Users\User\Desktop\uj\sem I\Python\main.py> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/main.py"
+xyz
+x
+[10, 20]
+20
+[3, 'xyz']
+[3, 'xyz', [10, 20], 3, 'xyz', [10, 20]]
+3x
+[3, 'xyz', 'podstawiony element']
+[0, 1, 2, 3]
+[3, 'xyz', 'podstawiony element']
+[0.1, 1, 6, 4322]
+[0, 2, 4, 6, 8, 10, 12]
+PS C:\Users\User\Desktop\uj\sem I\Python\main.py> 
