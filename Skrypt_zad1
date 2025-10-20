@@ -1,7 +1,0 @@
-# filepath: main.py
-
-import platform
-
-print(platform.system())
-print(platform.release())
-print("HELLO WORLD!!!!")
