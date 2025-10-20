@@ -1,0 +1,29 @@
+Krotka = (1, 2, 3)  # Krotka to lista której elementy nie mogą być zmieniane
+
+# Operacje na Krotkach:
+print(Krotka)  # Wyświetla całą krotkę
+print(len(Krotka)) # Wyświetla długość krotki
+print(Krotka[0:1]) # Dostęp do konkretnych elementów krotki
+print(Krotka * 2) # Powielanie krotki
+print(Krotka + (4, 5, 6)) # Łączenie krotek
+
+# Lista metod dir(tuple):
+print(dir(tuple)) # Wyświetla dostępne metody dla krotek (tuple)
+
+# Metody krotek:
+print(Krotka.index(3)) # Zwraca indeks dla "3" w krotce
+print(Krotka.count(2)) # Zwraca liczbę wystąpień "2" w krotce
+
+
+#Terminal:
+
+                > & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Zadanie_2.5/2.6.py"
+(1, 2, 3)
+3
+(1,)
+(1, 2, 3, 1, 2, 3)
+(1, 2, 3, 4, 5, 6)
+['__add__', '__class__', '__class_getitem__', '__contains__', '__delattr__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getnewargs__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__rmul__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', 'count', 'index']
+2
+1
+PS C:\Users\User>
