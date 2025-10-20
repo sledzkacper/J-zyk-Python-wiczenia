@@ -1,0 +1,106 @@
+# Zad_2.10
+print("\nZad_2.10")
+line = "305 1\n27\t4098"
+wyrazy = (line.split()) # Tworzy listę wyrazów z podanego ciągu znaków, rozdzielając je na podstawie białych znaków (spacji, tabulatorów, nowych linii).
+
+print(wyrazy)
+print("liczba wyrazów: ", len(wyrazy)) # liczy liczbę wyrazów w liście
+
+# Zad_2.11
+print("\nZad_2.11")
+word = "word"
+print("_".join(word)) # Wypisuje znaki słowa "word" oddzielone znakiem podkreślenia (_)
+
+# Zad_2.12
+print("\nZad_2.12")
+pierwsze = "".join(wyrazy[0] for wyrazy in wyrazy) # Tworzy nowy ciąg znaków poprzez połączenie pierwszych liter każdego wyrazu z listy wyrazów.
+ostatnie = "".join(wyrazy[-1] for wyrazy in wyrazy) # Tworzy nowy ciąg znaków poprzez połączenie ostatnich liter każdego wyrazu z listy wyrazów.
+print(pierwsze) 
+print(ostatnie)
+
+# Zad_2.13
+print("\nZad_2.13")
+print(sum((len(wyrazy[0]), len(wyrazy[1]), len(wyrazy[2]), len(wyrazy[3])))) # Łączna długość wszystkich wyrazów
+print(sum(len(x) for x in wyrazy)) #Łączna długość wszystkich wyrazów /alternatywna metoda
+
+# Zad_2.14
+print("\nZad_2.14")
+l = [len(wyrazy[0]), len(wyrazy[1]), len(wyrazy[2]), len(wyrazy[3])]    # Tworzy listę której elementami są kolejne długości wyrazów z line
+l.sort()    # Sortuje listę długości wyrazów rosnąco 
+print(l[-1]) # Wypisuje ostatni element, czyli największą wartość z L
+
+# Zad.2.15
+print("\nZad_2.15")
+L = [33, 1, 123, -2]
+L.sort() # Sortuje listę L rosnąco
+string = "".join(str(x) for x in L) # Łączy elementy listy L i zmienia je na string
+print(string, type(string))
+
+# Zad.2.16
+print("\nZad_2.16")
+
+line = "GvR stworzył Pythona"
+line = line.split()                         # Dzieli ciąg znaków na listę wyrazów
+line[0] = "Guido van Rossum"                # Zmienia pierwszy wyraz na "Guido van Rossum"
+str_line = " ".join(str(x) for x in line)   # Jeśli byśmy chcieli połączyć wyrazy z listy w jeden ciąg znaków, oddzielając je spacjami
+print(str_line)
+
+# Zad.2.17
+print("\nZad_2.17")
+alfabetem = sorted(line)
+print(alfabetem) 
+dlugoscia = sorted(line, key=len)
+print(dlugoscia)
+
+# Zad.2.18
+print("\nZad_2.18")
+
+a = 123809200020202300
+b = str(a)
+print(b.count("0"))
+
+# Zad.2.19
+print("\nZad_2.19")
+
+L = [8, 13, 345]
+L = [str(x).zfill(3) for x in L]
+print(L)
+
+
+#Terminal:
+PS C:\Users\User\Desktop\uj\sem I\Python\main.py\Zadanie_2.5> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Zadanie_2.5/2.10-2.19.py"
+
+Zad_2.10
+['305', '1', '27', '4098']
+liczba wyrazów:  4
+
+Zad_2.11
+w_o_r_d
+
+Zad_2.12
+3124
+5178
+
+Zad_2.13
+10
+10
+
+Zad_2.14
+4
+
+Zad_2.15
+-2133123 <class 'str'>
+
+Zad_2.16
+Guido van Rossum stworzył Pythona
+
+Zad_2.17
+['Guido van Rossum', 'Pythona', 'stworzył']
+['Pythona', 'stworzył', 'Guido van Rossum']
+
+Zad_2.18
+8
+
+Zad_2.19
+['008', '013', '345']
+PS C:\Users\User\Desktop\uj\sem I\Python\main.py\Zadanie_2.5>
