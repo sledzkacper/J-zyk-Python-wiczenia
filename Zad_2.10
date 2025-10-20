@@ -1,0 +1,12 @@
+line = "1 2\n3\t4"
+wyrazy = line.split()
+
+print(wyrazy)
+print("liczba wyrazów: ", len(wyrazy))
+
+#Terminal:
+PS C:\Users\User> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Zadanie_2.5/2.10.py"
+['1', '2', '3', '4']
+liczba wyrazów:  4
+PS C:\Users\User> 
+
