@@ -1,0 +1,48 @@
+# Zadanie 3.1
+
+x = 2; y = 3;
+if (x > y):
+    result = x;
+else:
+    result = y; # Do tego momentu jest poprawnie
+
+# for i in "axby": if ord(i) < 100: print (i) # Od tej linijki zaczyna się błąd, terminal pokazuje SyntaxError. Petla for i warunek if muszą być w innych wierszach
+# Zamiast tego:
+
+for i in "axby": 
+    if ord(i) < 100: print (i)
+for i in "axby": print (ord(i) if ord(i) < 100 else i) # W ostatniej linijce nie ma instrukcji warunkowej i pętli w jednym wierszu, kod działą poprawnie
+
+# Zadanie 3.2
+# L = [3, 5, 4] ; L = L.sort()   
+# Poprawnie:
+L = [3, 5, 4]
+L.sort()
+print (L)
+# x, y = 1, 2, 3      # Są dwie zmienne x i y, ale 3 wartości. Python "nie wie" jak je rozdzielić
+# Poprawnie, to np:
+x, y, z = 1, 2, 3
+print (x, y, z)
+
+#X = 1, 2, 3 ; X[1] = 4     # X jest krotką. Próba wprowadzenia zmian do krotki kończy się błędem
+# Poprawnie to np:
+X = [1, 2, 3] ; X[1] = 4
+print (X[1]) 
+
+# X = [1, 2, 3] ; X[3] = 4  # X[3] nie istnieje, bo listy są indeksowane od 0
+# Poprawnie to np:
+X.append(4)
+print (X)
+# X = "abc" ; X.append("d")  # Stringi w pythonie są niemodyfikowalne, dlatego funkcja append nie zadziała.
+# Poprawnie to np:
+X = ["abc"] ; X.append("d")
+print (X)
+
+# L = list(map(pow, range(8)))  # 
+L = list(map(lambda x: pow(x, 2), range(8)))
+print (L)
+# lub prościej:
+L = [x**2 for x in range(8)]
+print (L)
+# Zadanie 3.3
+
