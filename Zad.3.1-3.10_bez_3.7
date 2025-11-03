@@ -44,5 +44,95 @@ print (L)
 # lub prościej:
 L = [x**2 for x in range(8)]
 print (L)
+
 # Zadanie 3.3
+for i in range(31):
+    if i % 3 == 0:
+        continue
+    print (i)
+
+n = 0
+while n < 31:
+    if n % 3 != 0:
+        print (n)
+    n += 1
+
+# Zadanie 3.4
+while True:
+    x = input("Podaj x , lub wpisz stop: ")
+    if x == "stop":
+        print("Wyłączam program")
+        break
+    try:
+        x = float(x)
+        print (x**3)
+    except ValueError:
+        print("Podałeś x, który nie jest typu float")
+        continue
+
+# Zadanie 3.5
+while True:
+    x = input("Podaj liczbę, lub wpisz stop: ")
+    if x == "stop":
+        print("Wyłączam program")
+        break
+    try:
+        góra = "|"
+
+        x = int(x)
+        for i in range(x):
+            góra += "....|"
+
+        dół = str(0)
+
+        for i in range(1, x + 1):
+            dół += str(i).rjust(5)
+        
+        print(góra)
+        print(dół)
+
+
+
+    except ValueError:
+        print("Podałeś liczbę, który nie jest typu int")
+        continue
+
+
+# Zadanie 3.6
+while True:
+    b = input("Podaj długość b: ")
+    a = input("Podaj wysokość a: ")
+
+    try:
+        a = int(a)
+        b = int(b)
+
+
+        długość = "+"
+        for i in range (b):
+            długość += "---+"
+               
+        przedział = "|"
+        for i in range (b):
+            przedział += "   |"
+
+        for i in range (a):
+            print(długość)
+            print(przedział)
+            
+        print (długość)
+        
+        
+    except ValueError:
+        print("Podałeś liczbę, który nie jest typu int")
+        continue
+
+
+
+
+
+        
+
+
+
 
