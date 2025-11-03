@@ -128,6 +128,64 @@ while True:
         continue
 
 
+# Zadanie 3.8
+L1 = ["h", 1, "d", "t", 5, "u", "z", "h", 4, 5, 6, "k"]
+L2 = ["h", "q", "w", "e", "r", "t", "y", 1, 2, 3, 4, "h"]
+
+# a) 
+wspólne = []
+
+for item in L1:
+    if item in L2 and item not in wspólne:
+        wspólne.append(item)
+        
+print (wspólne)        
+
+# b) 
+wszystkie = []
+for item in L1: 
+    if item in L1 and item not in wszystkie:
+        wszystkie.append(item)
+
+for item in L2:
+    if item in L2 and item not in wszystkie:
+        wszystkie.append(item)
+
+print (wszystkie)
+
+# Zadanie 3.9
+L = [[1], [4,5], (1,2,3), (6,6,6,6)]
+Lsum = []
+for item in L:
+    suma = sum(item)
+    Lsum.append(suma)
+
+print(Lsum)
+
+# Zadanie 3.10
+roman = input("Podaj liczbę rzymską: ")
+def roman2int(roman):
+    słownik = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    suma = 0
+    poprzednia_wartość = 0
+
+    for item in reversed(roman):
+        wartość = słownik[item]
+        if wartość < poprzednia_wartość:
+            suma -=wartość
+        else:
+            suma += wartość
+
+        poprzednia_wartość=wartość
+
+    return suma
+
+print(roman2int("XVII"))
+print(roman2int("XL"))
+
+print(roman2int(roman))
+
+
 
 
 
