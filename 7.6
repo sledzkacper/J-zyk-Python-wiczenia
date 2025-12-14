@@ -1,0 +1,31 @@
+# Zad. 7.6
+import itertools
+
+L = []
+# (a) zwracający 0, 1, 0, 1, 0, 1, ...,
+for x in itertools.cycle([0, 1]):
+    print(x)
+    L.append(x)
+    if len(L) == 20: # sprawdzenie czy działa
+        break
+
+# (b) zwracający przypadkowo jedną wartość z ("N", "E", "S", "W") [błądzenie przypadkowe na sieci kwadratowej 2D],
+import random
+comp = ["N", "E", "S", "W"]
+L = []
+
+for i in itertools.repeat(0):
+    print(random.choice(comp))
+    L.append(random.choice(comp))
+    if len(L) == 20:  # sprawdzenie czy działa
+        break
+
+# (c) zwracający 0, 1, 2, 3, 4, 5, 6, 0, 1, 2, 3, 4, 5, 6, ... [numery dni tygodnia]
+L = []
+for i in itertools.cycle(range(0, 7)):
+    print(i)
+    L.append(i)
+    if len(L) == 20:    # sprawdzenie czy działa
+        break
+    
+# Jeśli chcemy aby iteratory były faktycznie nieskończone, należy wyrzucić/zakomentować warunek oraz break
