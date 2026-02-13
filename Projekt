@@ -1,0 +1,375 @@
+"""
+=============================================================
+Projekt Python - Wielomiany
+
+Wielomiany gęste na bazie list Pythona. Należy zaimplementować następujące działania na wielomianach: dodawanie, odejmowanie, 
+mnożenie, obliczanie wartości (Horner), porównywanie (==,!=), wyświetlanie, użycie nawiasów [] (odczyt współczynnika przy danej 
+potędze x). Wielomiany są równe, gdy ich różnica jest wielomianem zerowym. Przydatne funkcje: is_zero(), degree() (stopień wielomianu).
+=============================================================
+"""
+
+import unittest
+import math
+import numpy as np
+
+class Wielomian:
+
+    
+    def __init__(self, a):
+
+        if not isinstance(a, list):
+            raise TypeError("Współczynniki muszą być w formie listy")
+
+        for c in a:
+
+            if not isinstance(c, (int, float, np.integer, np.floating)):
+                raise ValueError("Współczynnikiem musi być liczba wymierna")
+            
+            # if c == 0:
+            #     raise ValueError("Współczynniki muszą być niezerowe")
+            
+
+                
+            
+    
+        self.size = len(a) - 1   # n to lista, n - 1 daje stopień wielomianu
+        self.a = a
+
+                    
+
+    def __str__(self):
+        return f"{self.a}"
+    
+    
+
+    def __add__(self, other):
+        
+        # kopiujemy listy, żeby nie psuć oryginałów
+        a1 = self.a[:]
+        a2 = other.a[:]
+        
+        if len(a1) > len(a2):
+            różnica_stopnia = len(a1) - len(a2)
+            a2.extend([0] * różnica_stopnia)
+        elif len(a1) < len(a2):
+            różnica_stopnia = len(a2) - len(a1)
+            a1.extend(różnica_stopnia * [0])
+        
+
+        stopień = max(len(a1), len(a2))
+        s = [1] * stopień
+
+        suma = Wielomian(s)
+
+        for i in range(len((s))):
+            s[i] = round(a1[i] + a2[i], 3)
+
+        return suma
+    
+    def __sub__(self, other):
+        
+        # kopiujemy listy, żeby nie psuć oryginałów
+        a1 = self.a[:]
+        a2 = other.a[:]
+        
+        if len(a1) > len(a2):
+            różnica_stopnia = len(a1) - len(a2)
+            a2.extend([0] * różnica_stopnia)
+        elif len(a1) < len(a2):
+            różnica_stopnia = len(a2) - len(a1)
+            a1.extend(różnica_stopnia * [0])
+        
+
+        stopień = max(len(a1), len(a2))
+        s = [1] * stopień
+
+        suma = Wielomian(s)
+
+        for i in range(len((s))):
+            s[i] = round(a1[i] - a2[i], 3)
+
+        return suma
+
+    def __mul__(self, other):
+        a1 = self.a[:]
+        a2 = other.a[:]
+
+
+        
+        macierz = np.zeros((0, len(a2)))
+
+
+        for i in range(len(a1)):
+
+            L = [1] * len(a2)
+
+            for j in range(len(a2)):
+                L[j] = a1[i] * a2[j]            # Pętla wymnaża po kolei wszystkie składniki z wielomianów
+            macierz = np.vstack([macierz, L])   # Następnie tworzy macierz gdzie umiejscawia wyniki z mnożenia
+
+        
+
+        stopień = len(a1) + len(a2) - 1 # Stopień nowego wielomianu jest równy sumie stopni tych wielomianów
+        s = [0] * stopień
+
+
+        for k in range(stopień):
+            suma = 0
+            for i in range(len(a1)):
+                j = k - i
+
+                if 0 <= j < len(a2):
+                    suma += macierz[i][j]
+
+            s[k] = round(float(suma), 3)
+
+        return Wielomian(s)
+
+
+        
+
+    def _normalize(self):
+        # usuwa zera z końca listy
+        while len(self.a) > 1 and abs(self.a[-1]) == 0:
+            self.a.pop()
+        self.size = len(self.a) - 1
+
+
+    
+
+    def degree(self):
+        self._normalize()
+        return self.size
+
+
+
+    def is_zero(self):
+        self._normalize()
+        return len(self.a) == 1 and self.a[0] == 0
+
+
+
+    def __getitem__(self, index):
+        if not isinstance(index, int):
+            raise TypeError("Indeks musi być liczbą całkowitą")
+
+        if index < 0:
+            raise IndexError("Potęga nie może być ujemna")
+
+        if index >= len(self.a):
+            return 0
+
+        return self.a[index]
+
+
+
+
+    def __call__(self, x):
+        if not isinstance(x, (int, float, np.integer, np.floating)):
+            raise TypeError("Argument musi być liczbą")
+
+        wynik = 0
+        for coef in reversed(self.a):               # x(x(xa3​+a2​)+a1​)+a0​ zamiast kalsycznego a3​x^3 + a2​x^2 + a1​x +a0​
+            wynik = wynik * x + coef
+
+        return round(float(wynik), 6)
+
+
+
+
+    def __eq__(self, other):
+        if not isinstance(other, Wielomian):
+            return False
+
+        self._normalize()
+        other._normalize()
+
+        return self.a == other.a
+
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+
+    def __str__(self):
+        self._normalize()
+
+        if self.is_zero():      # Pomijamy zera
+            return "0"
+
+        wyrazy = []
+
+        for i in range(len(self.a) - 1, -1, -1):
+            coef = self.a[i]
+
+            if coef == 0:
+                continue
+
+            if i == 0:
+                wyrazy.append(f"{coef}")
+            elif i == 1:
+                if coef == 1:
+                    wyrazy.append("x")
+                elif coef == -1:
+                    wyrazy.append("-x")
+                else:
+                    wyrazy.append(f"{coef}x")
+            else:
+                if coef == 1:
+                    wyrazy.append(f"x^{i}")
+                elif coef == -1:
+                    wyrazy.append(f"-x^{i}")
+                else:
+                    wyrazy.append(f"{coef}x^{i}")
+
+        return " + ".join(wyrazy).replace("+ -", "- ")
+
+        
+
+
+
+        
+
+
+
+
+w = Wielomian([0, 0, 3, 6, 3])
+
+print(w)          # reprezentacja z x i ich potęgami
+print(w(2))       # Horner
+print(w[3])       # współczynnik przy x^3
+print(w.degree())   
+print(w.is_zero())
+
+w1 = Wielomian([1, 2, 0])
+w2 = Wielomian([1, 2])
+print(w1 == w2)   
+ 
+
+
+""" Testy """
+
+class TestWielomian(unittest.TestCase):
+
+
+    def test_init_valid(self):
+        w = Wielomian([1, 2, 3])
+        self.assertEqual(w.a, [1, 2, 3])
+
+    def test_init_invalid_type(self):
+        with self.assertRaises(TypeError):
+            Wielomian("123")
+
+    def test_init_invalid_element(self):
+        with self.assertRaises(ValueError):
+            Wielomian([1, "x", 3])
+
+
+
+    def test_add(self):
+        w1 = Wielomian([1, 2])
+        w2 = Wielomian([3, 4])
+        wynik = w1 + w2
+        self.assertEqual(wynik, Wielomian([4, 6]))
+
+
+
+    def test_sub(self):
+        w1 = Wielomian([5, 4])
+        w2 = Wielomian([3, 2])
+        wynik = w1 - w2
+        self.assertEqual(wynik, Wielomian([2, 2]))
+
+
+
+    def test_mul(self):
+        w1 = Wielomian([1, 1])       # 1 + x
+        w2 = Wielomian([1, 1])       # 1 + x
+        wynik = w1 * w2              # (1+x)^2 = 1 + 2x + x^2
+        self.assertEqual(wynik, Wielomian([1, 2, 1]))
+
+
+    def test_degree(self):
+        w = Wielomian([1, 2, 0, 0])
+        self.assertEqual(w.degree(), 1)
+
+
+
+    def test_is_zero(self):
+        w = Wielomian([0, 0, 0])
+        self.assertTrue(w.is_zero())
+
+        w2 = Wielomian([1, 0])
+        self.assertFalse(w2.is_zero())
+
+
+    def test_getitem(self):
+        w = Wielomian([1, 2, 3])
+        self.assertEqual(w[0], 1)
+        self.assertEqual(w[2], 3)
+        self.assertEqual(w[5], 0)
+
+    def test_getitem_invalid(self):
+        w = Wielomian([1, 2])
+        with self.assertRaises(TypeError):
+            _ = w["x"]
+
+        with self.assertRaises(IndexError):
+            _ = w[-1]
+
+
+    def test_call(self):
+        w = Wielomian([1, 2, 3])  
+        self.assertEqual(w(0), 1)
+        self.assertEqual(w(1), 6)
+        self.assertEqual(w(2), 17)
+
+
+    def test_eq(self):
+        w1 = Wielomian([1, 2, 0])
+        w2 = Wielomian([1, 2])
+        self.assertTrue(w1 == w2)
+
+    def test_ne(self):
+        w1 = Wielomian([1, 2])
+        w2 = Wielomian([2, 1])
+        self.assertTrue(w1 != w2)
+
+
+    def test_str(self):
+        w = Wielomian([1, 2, 4])
+        self.assertEqual(str(w), "4x^2 + 2x + 1")
+
+        w2 = Wielomian([0])
+        self.assertEqual(str(w2), "0")
+
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+# Terminal
+# PS C:\Users\User> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Projekt_Wielomiany/Projekt_Wielomiany_Kacper_Śledź.py"
+# 3x^4 + 6x^3 + 3x^2
+# 108.0
+# 6
+# 4
+# False
+# True
+# ..............
+# ----------------------------------------------------------------------
+# Ran 14 tests in 0.001s
+
+# OK
+# PS C:\Users\User> 
+
+            
+
+
+
+
+    
+    
+    
