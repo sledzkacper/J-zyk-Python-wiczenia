@@ -1,3 +1,6 @@
+# Snake w dwóch wersjach, prostej oraz urozmaiconej poniżej
+
+""" Ver.1 """
 import pygame
 import sys
 import random 
@@ -42,10 +45,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mouse_x, mouse_y = event.pos
         
         elif event.type == pygame.KEYDOWN:  # RESTART
             if (game_over or win) and event.key == pygame.K_r:
@@ -157,15 +156,44 @@ sys.exit()
 
 
 
-#====================================================================================================
-# Dodałem wersję gdzie wąż przyspiesza po zjedzieniu 5 owoców, oraz napis u góry z warunkiem wygranej
-#====================================================================================================
+""" Ver.2 """
+
+#=======================================================================================================================
+# Dodałem wersję gdzie wąż przyspiesza po zjedzieniu 5 owoców, napis u góry z warunkiem wygranej, oraz ścieżkę dźwiękową
+#=======================================================================================================================
 
 import pygame
 import sys
 import random 
+import os
 
 pygame.init()
+pygame.mixer.init()   
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+music_path = os.path.join(BASE_DIR, "soundtrack", "tlo.mp3")
+eat_path = os.path.join(BASE_DIR, "soundtrack", "owocek.wav")
+speed_path = os.path.join(BASE_DIR, "soundtrack", "level.wav")
+lose_path = os.path.join(BASE_DIR, "soundtrack", "lose.wav")
+win_path = os.path.join(BASE_DIR, "soundtrack", "win.ogg")
+
+pygame.mixer.music.load(music_path)
+pygame.mixer.music.set_volume(0.1)
+pygame.mixer.music.play(-1)
+
+eat_sound = pygame.mixer.Sound(eat_path)
+eat_sound.set_volume(1)
+
+speed_up_sound = pygame.mixer.Sound(speed_path)
+speed_up_sound.set_volume(0.5)
+
+game_over_sound = pygame.mixer.Sound(lose_path)
+game_over_sound.set_volume(0.8)
+
+win_sound = pygame.mixer.Sound(win_path)
+win_sound.set_volume(0.4)
+
 
 
 clock = pygame.time.Clock()
@@ -188,9 +216,7 @@ kierunek = right
 MOVE_DELAY = 100    # efekt przechodzenia wężą z opóźnieniem
 last_move_time = 0
 
-fruit = None    # tworzymy owoc
-# fruit_spawn_time = 0
-# fruit_lifetime = 5000  # 5000 ms = 5 sekund
+fruit = None    # tworzymy owoc i licznik punktów
 score = 0
 
 game_over = False
@@ -207,11 +233,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mouse_x, mouse_y = event.pos
-        
+      
         elif event.type == pygame.KEYDOWN:  #RESTART
             if (game_over or win) and event.key == pygame.K_r:
                 snake = [(COLS // 2, ROWS // 2)]
@@ -221,6 +243,7 @@ while running:
                 win = False
                 score = 0
                 MOVE_DELAY = 100
+                pygame.mixer.music.play(-1)  
 
 
 
@@ -249,33 +272,35 @@ while running:
         x, y = new_head
         if x < 0 or x >= COLS or y < 0 or y >= ROWS:
             game_over = True
+            pygame.mixer.music.stop()
+            game_over_sound.play()
             
-
         snake.insert(0, new_head)
 
         # Kolizja z samym sobą
         if new_head in snake[1:]:   
             game_over = True
+            pygame.mixer.music.stop()
+            game_over_sound.play()
             
-            
-
-
         # wydłużanie węża po zjedzeniu owocu
         if fruit == new_head:
             fruit = None
             score += 1
-            if score == 5 or score == 10 or score == 16:
+            
+            if score == 5 or score == 10 or score == 15:
                 MOVE_DELAY = MOVE_DELAY - 20  # zwiększanie prędkości węża
+                speed_up_sound.play()
+            else:
+                eat_sound.play()
         else:
             snake.pop()
         
-        if len(snake) == 21:
+        if score == 20:
             win = True
+            pygame.mixer.music.stop()
+            win_sound.play()
         
-        
-
-
-    
     # respawn owocu po zjedzeniu
     if fruit is None:
 
@@ -290,6 +315,7 @@ while running:
     
     screen.fill((20, 20, 20))    #kolor tła 
 
+    # Komunikat o puntkach i warunku wygranej
     punkty = font_big.render(f"SCORE: {score}", True, (255, 255, 255))
     screen.blit(punkty, (10, 10))
     warunek = font_big.render(f"Zjedz 20 owoców!", True, (255, 255, 255))
@@ -328,7 +354,6 @@ while running:
 
 pygame.quit()
 sys.exit()
-
 
 
 
