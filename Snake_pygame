@@ -154,3 +154,181 @@ while running:
 
 pygame.quit()
 sys.exit()
+
+
+
+#====================================================================================================
+# Dodałem wersję gdzie wąż przyspiesza po zjedzieniu 5 owoców, oraz napis u góry z warunkiem wygranej
+#====================================================================================================
+
+import pygame
+import sys
+import random 
+
+pygame.init()
+
+
+clock = pygame.time.Clock()
+FPS = 60
+running = True
+
+WIDTH = 1200    #siatka, podział ekranu na kolumny i wiersze
+HEIGHT = 800
+TILE = 40
+COLS = WIDTH // TILE    
+ROWS = HEIGHT // TILE
+
+snake = [(COLS // 2, ROWS // 2)]  # początkowa pozycja węża
+up = (0, -1)    # 4 możliwe kierunki ruchu
+down = (0, 1)
+left = (-1, 0)
+right = (1, 0)
+kierunek = right
+
+MOVE_DELAY = 100    # efekt przechodzenia wężą z opóźnieniem
+last_move_time = 0
+
+fruit = None    # tworzymy owoc
+# fruit_spawn_time = 0
+# fruit_lifetime = 5000  # 5000 ms = 5 sekund
+score = 0
+
+game_over = False
+win = False
+
+font_big = pygame.font.Font(None, 50)  # ustawianie czcionki
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Sssnake")
+
+while running:
+
+    """ Eventy """
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_x, mouse_y = event.pos
+        
+        elif event.type == pygame.KEYDOWN:  #RESTART
+            if (game_over or win) and event.key == pygame.K_r:
+                snake = [(COLS // 2, ROWS // 2)]
+                kierunek = right
+                fruit = None
+                game_over = False
+                win = False
+                score = 0
+                MOVE_DELAY = 100
+
+
+
+    """ Updaty """
+
+    keys = pygame.key.get_pressed()  # sterowanie wężem
+
+    if keys[pygame.K_a] and kierunek != right:
+        kierunek = left
+    if keys[pygame.K_d] and kierunek != left:
+        kierunek = right
+    if keys[pygame.K_w] and kierunek != down:
+        kierunek = up
+    if keys[pygame.K_s] and kierunek != up:
+        kierunek = down
+
+    # aktualizacja pozycji węża
+    current_time = pygame.time.get_ticks()  #opóźnienie, co daje efekt przeskakiwania pomiedzy polami siatki
+    if not (game_over or win) and current_time - last_move_time > MOVE_DELAY:
+        last_move_time = current_time
+
+        head_x, head_y = snake[0]
+        new_head = (head_x + kierunek[0], head_y + kierunek[1]) # przesunięcie o kafelek
+        
+        # kolizja ze ścianą
+        x, y = new_head
+        if x < 0 or x >= COLS or y < 0 or y >= ROWS:
+            game_over = True
+            
+
+        snake.insert(0, new_head)
+
+        # Kolizja z samym sobą
+        if new_head in snake[1:]:   
+            game_over = True
+            
+            
+
+
+        # wydłużanie węża po zjedzeniu owocu
+        if fruit == new_head:
+            fruit = None
+            score += 1
+            if score == 5 or score == 10 or score == 16:
+                MOVE_DELAY = MOVE_DELAY - 20  # zwiększanie prędkości węża
+        else:
+            snake.pop()
+        
+        if len(snake) == 21:
+            win = True
+        
+        
+
+
+    
+    # respawn owocu po zjedzeniu
+    if fruit is None:
+
+        while True:
+            new_fruit = (random.randint(0, COLS - 1), random.randint(0, ROWS - 1))
+            if new_fruit not in snake:
+                fruit = new_fruit
+                break
+
+
+    """ Rysowanie """
+    
+    screen.fill((20, 20, 20))    #kolor tła 
+
+    punkty = font_big.render(f"SCORE: {score}", True, (255, 255, 255))
+    screen.blit(punkty, (10, 10))
+    warunek = font_big.render(f"Zjedz 20 owoców!", True, (255, 255, 255))
+    screen.blit(warunek, (10, 50))
+
+    # Koniec gry, napis
+    if game_over:
+        text = font_big.render("GAME OVER", True, (255, 255, 255))
+        podloga = text.get_rect(center =(WIDTH // 2, HEIGHT // 2 - 30))
+        screen.blit(text, podloga)
+
+        text2 = font_big.render("Press R to restart", True, (255, 255, 255))
+        podloga2 = text2.get_rect(center =(WIDTH // 2, HEIGHT // 2 + 30))
+        screen.blit(text2, podloga2)
+
+    if win:
+        text = font_big.render("YOU WIN!", True, (255, 255, 255))
+        podloga = text.get_rect(center =(WIDTH // 2, HEIGHT // 2 - 30))
+        screen.blit(text, podloga)
+
+        text2 = font_big.render("Press R to restart", True, (255, 255, 255))
+        podloga2 = text2.get_rect(center =(WIDTH // 2, HEIGHT // 2 + 30))
+        screen.blit(text2, podloga2)
+
+    # wąż
+    for jw in snake:    # jw oznacza jedną jednostę węża, czyli jeden segment z ciała
+        x, y = jw
+        pygame.draw.rect(screen, (0, 250, 0), (x * TILE, y * TILE, TILE, TILE))
+    
+    # owoce
+    fx, fy = fruit
+    pygame.draw.rect(screen, (250, 0, 0), (fx * TILE, fy * TILE, TILE, TILE))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+pygame.quit()
+sys.exit()
+
+
+
+
