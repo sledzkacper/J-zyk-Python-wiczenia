@@ -1,10 +1,29 @@
 """
 =============================================================
-Projekt Python - Wielomiany
+Projekt zaliczeniowy: Język Python - Wielomiany
+Semestr zimowy 25/26
 
-Wielomiany gęste na bazie list Pythona. Należy zaimplementować następujące działania na wielomianach: dodawanie, odejmowanie, 
-mnożenie, obliczanie wartości (Horner), porównywanie (==,!=), wyświetlanie, użycie nawiasów [] (odczyt współczynnika przy danej 
-potędze x). Wielomiany są równe, gdy ich różnica jest wielomianem zerowym. Przydatne funkcje: is_zero(), degree() (stopień wielomianu).
+Reprezentacja:
+Wielomiany gęste reprezentowane jako lista współczynników:
+[a0, a1, a2, ..., an]
+gdzie:
+a0 + a1*x + a2*x^2 + ... + an*x^n
+
+Lista jest normalizowana poprzez usuwanie zer końcowych.
+
+Zaimplementowane operacje:
+- dodawanie 
+- odejmowanie 
+- mnożenie 
+- obliczanie wartości (schemat Hornera)
+- porównywanie (==, !=)
+- dostęp do współczynnika przez []
+- reprezentacja tekstowa (__str__)
+- operacje z liczbami (radd, rsub, rmul)
+- stopień wielomianu (degree)
+- sprawdzanie czy zerowy (is_zero)
+
+Autor: Kacper Śledź
 =============================================================
 """
 
@@ -14,35 +33,40 @@ import numbers
 
 class Wielomian:
 
+    """
+    Klasa reprezentująca wielomian jednej zmiennej.
+
+    Współczynniki przechowywane są w liście self.a,
+    gdzie indeks odpowiada potędze x.
+    """
+
     
-    def __init__(self, a):
+    def __init__(self, other):
+        """ Konstruktor """
+        if isinstance(other, Wielomian):
+            self.a = other.a[:]
 
-        if isinstance(a, Wielomian):
-            self.a = a.a[:]
-
-        elif isinstance(a, (int, float)):
-            self.a = [a]
-
-        elif isinstance(a, list):
-            for elem in a:
-                if not isinstance(elem, numbers.Number):
-                    raise ValueError("Elementy listy muszą być liczbami")
-            self.a = list(a)
-
+        elif isinstance(other, (list, tuple)):
+            if not all(isinstance(elem, numbers.Number) for elem in other):
+                raise ValueError("Elementy listy muszą być liczbami")
+            self.a = list(other)
+        
         else:
-            raise TypeError("Niepoprawny typ danych")
+            if not isinstance(other, numbers.Number):
+                raise TypeError("Zły typ danych")
+            self.a = [other]
 
         self._normalize()
 
     def _normalize(self):
-        # usuwa zera z końca listy
+        """ Normalizacja: usuwa zera z końca listy """
         while len(self.a) > 1 and abs(self.a[-1]) == 0:
             self.a.pop()
         self.size = len(self.a) - 1
                     
     
     def __add__(self, other):
-        
+        """ Dodawanie """
         other = Wielomian(other)
 
         max_len = max(len(self.a), len(other.a))
@@ -56,7 +80,7 @@ class Wielomian:
         return Wielomian(suma)
     
     def __sub__(self, other):
-
+        """ Odejmowanie """
         other = Wielomian(other)
 
         max_len = max(len(self.a), len(other.a))
@@ -72,7 +96,7 @@ class Wielomian:
         
 
     def __mul__(self, other):
-        
+        """ Mnożenie """
         other = Wielomian(other)
 
         iloczyn = [0] * (len(self.a) + len(other.a) - 1)
@@ -91,18 +115,24 @@ class Wielomian:
     
 
     def degree(self):
-        
+        """ Zwraca stopień wielomianu """
         return self.size
 
 
 
     def is_zero(self):
-        self._normalize()
+        """Zwraca True, jeśli wielomian jest zerowy """
         return len(self.a) == 1 and self.a[0] == 0
 
 
 
     def __getitem__(self, index):
+        """
+        Zwraca współczynnik przy potędze x^index.
+
+        Jeśli indeks jest większy niż stopień wielomianu,
+        zwraca 0.
+        """
         if not isinstance(index, int):
             raise TypeError("Indeks musi być liczbą całkowitą")
 
@@ -118,6 +148,7 @@ class Wielomian:
 
 
     def __call__(self, x):
+        """ Oblicza wartość w punkcie x za pomocą Hornera """
         if not isinstance(x, (int, float)):
             raise TypeError("Argument musi być liczbą")
 
@@ -131,23 +162,21 @@ class Wielomian:
 
 
     def __eq__(self, other):
+        """ Zwraca True, jeśli wielomiany są równe """
         if not isinstance(other, Wielomian):
             return False
-
-        self._normalize()
-        other._normalize()
-
+        
         return self.a == other.a
 
 
     def __ne__(self, other):
+        """ Zwaraca True, jeśli wielomiany są różne """
         return not self.__eq__(other)
 
 
 
     def __str__(self):
-        self._normalize()
-
+        """ Reprezentacja tekstowa wielomianu """
         if self.is_zero():      # Pomijamy zera
             return "0"
 
@@ -305,14 +334,5 @@ if __name__ == "__main__":
     unittest.main()
 
 
-# Terminal
-# PS C:\Users\User> & C:/Users/User/AppData/Local/Microsoft/WindowsApps/python3.13.exe "c:/Users/User/Desktop/uj/sem I/Python/main.py/Projekt_Wielomiany/Projekt_Wielomiany_Kacper_Śledź.py"
-# .................
-# ----------------------------------------------------------------------
-# Ran 17 tests in 0.001s
 
-# OK
-# PS C:\Users\User> 
-
-
-
+    
